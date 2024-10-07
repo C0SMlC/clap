@@ -23,8 +23,8 @@ const VideoEditor = () => {
   const [captionStyle, setCaptionStyle] = useState({
     font: "Montserrat",
     weight: "Black",
-    color: "white",
-    position: 20,
+    color: "#fafafa",
+    position: 0,
     size: 8,
     display: "Displayed",
     animation: "No Animation",
@@ -80,6 +80,7 @@ const VideoEditor = () => {
         body: JSON.stringify({
           videoSrc,
           captions: caption,
+          captionStyle,
         }),
       });
 
@@ -149,13 +150,13 @@ const VideoEditor = () => {
               <Text fontWeight="bold">Fill</Text>
               <HStack>
                 {[
-                  "white",
-                  "black",
-                  "red",
-                  "yellow",
-                  "green",
-                  "blue",
-                  "purple",
+                  "#fafafa",
+                  "#000000",
+                  "#d50000",
+                  "#ffd600",
+                  "#2e7d32",
+                  "#0091ea",
+                  "#6200ea",
                 ].map((color) => (
                   <Button
                     key={color}
@@ -179,6 +180,9 @@ const VideoEditor = () => {
               </Slider>
               <Text fontWeight="bold">Size</Text>
               <Slider
+                min={1}
+                max={20}
+                step={1}
                 value={captionStyle.size}
                 onChange={(value) => updateCaptionStyle("size", value)}
               >
@@ -187,6 +191,7 @@ const VideoEditor = () => {
                 </SliderTrack>
                 <SliderThumb />
               </Slider>
+              <Text fontSize="sm">{captionStyle.size}</Text>
               <Text fontWeight="bold">Display</Text>
               <HStack>
                 {["Displayed", "Lines", "Words"].map((option) => (

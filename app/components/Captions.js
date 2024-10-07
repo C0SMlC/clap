@@ -47,6 +47,7 @@ const Caption = ({ caption, style }) => {
         fontWeight={weight}
         color={color}
         fontSize={`${size * 0.5}em`}
+        textShadow="0px 0px 3px rgba(0,0,0,0.8)"
         {...getDisplayStyle()}
         {...getAnimationStyle()}
       >

@@ -13,11 +13,15 @@ const VideoPlayer = ({ videoSrc, caption, captionStyle }) => {
     const updateCaptions = () => {
       const currentTime = video.currentTime;
       const activeCaption = caption.find(
-        (cap) =>
-          currentTime >= cap.startInSeconds &&
-          currentTime < cap.startInSeconds + 1
+        (cap) => currentTime >= cap.start && currentTime < cap.start + 1
       );
       setCurrentCaption(activeCaption ? activeCaption.text : "");
+      console.log(
+        "Current time:",
+        currentTime,
+        "Active caption:",
+        activeCaption
+      );
     };
 
     video.addEventListener("timeupdate", updateCaptions);
@@ -26,6 +30,10 @@ const VideoPlayer = ({ videoSrc, caption, captionStyle }) => {
       video.removeEventListener("timeupdate", updateCaptions);
     };
   }, [caption]);
+
+  useEffect(() => {
+    console.log("Current caption:", currentCaption);
+  }, [currentCaption]);
 
   return (
     <Box
