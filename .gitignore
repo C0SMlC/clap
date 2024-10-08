@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /.pnp
+/public/*.srt
+/public/output_*.mp4
 .pnp.js
 .yarn/install-state.gz
 
