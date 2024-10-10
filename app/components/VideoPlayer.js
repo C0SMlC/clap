@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 "use client";
 import React, {
   useRef,
@@ -26,6 +27,81 @@ const VideoPlayer = forwardRef(
     const canvasRef = useRef(null);
     const fabricCanvasRef = useRef(null);
     const [currentCaption, setCurrentCaption] = useState("");
+    const [customText, setCustomText] = useState(null);
+
+    useEffect(() => {
+      if (isAddingCaption && canvasRef.current && videoRef.current) {
+        const videoWidth = videoRef.current.videoWidth;
+        const videoHeight = videoRef.current.videoHeight;
+
+        fabricCanvasRef.current = new fabric.Canvas(canvasRef.current, {
+          width: 900,
+          height: 900,
+        });
+
+        const text = new fabric.IText("Edit this texthkkkkkkkkkkkk", {
+          left: 900 / 2,
+          top: 900 / 2,
+          fontFamily: "Arial",
+          fill: "#ffffff",
+          fontSize: 30,
+          originX: "center",
+          originY: "center",
+        });
+
+        fabricCanvasRef.current.add(text);
+        fabricCanvasRef.current.setActiveObject(text);
+
+        console.log(videoHeight, videoWidth);
+
+        // Set canvas size to match video dimensions
+        fabricCanvasRef.current.setDimensions({
+          width: 900,
+          height: 900,
+        });
+
+        // Ensure text stays within canvas bounds
+        text.on("moving", function () {
+          text.setCoords();
+          if (text.left < 0) {
+            text.left = 0;
+          }
+          if (text.top < 0) {
+            text.top = 0;
+          }
+          // if (text.getScaledWidth() + text.left > videoWidth) {
+          //   text.left = videoWidth - text.getScaledWidth();
+          // }
+          // if (text.getScaledHeight() + text.top > videoHeight) {
+          //   text.top = videoHeight - text.getScaledHeight();
+          // }
+        });
+
+        setCustomText(text);
+      }
+
+      return () => {
+        if (fabricCanvasRef.current) {
+          fabricCanvasRef.current.dispose();
+          fabricCanvasRef.current = null;
+        }
+      };
+    }, [isAddingCaption]);
+
+    // Function to get custom text data
+    const getCustomTextData = () => {
+      if (customText) {
+        return {
+          text: customText.text,
+          left: customText.left,
+          top: customText.top,
+          fontFamily: customText.fontFamily,
+          fontSize: customText.fontSize,
+          fill: customText.fill,
+        };
+      }
+      return null;
+    };
 
     useImperativeHandle(ref, () => ({
       get currentTime() {
@@ -45,6 +121,7 @@ const VideoPlayer = forwardRef(
       pause() {
         videoRef.current?.pause();
       },
+      getCustomTextData,
     }));
 
     useEffect(() => {
@@ -73,32 +150,32 @@ const VideoPlayer = forwardRef(
       };
     }, [caption, onTimeUpdate, onDurationChange]);
 
-    useEffect(() => {
-      if (isAddingCaption && canvasRef.current) {
-        fabricCanvasRef.current = new fabric.Canvas(canvasRef.current, {
-          width: videoRef.current.videoWidth,
-          height: videoRef.current.videoHeight,
-        });
+    // useEffect(() => {
+    //   if (isAddingCaption && canvasRef.current) {
+    //     fabricCanvasRef.current = new fabric.Canvas(canvasRef.current, {
+    //       width: videoRef.current.videoWidth,
+    //       height: videoRef.current.videoHeight,
+    //     });
 
-        const text = new fabric.IText("Edit this text", {
-          left: 50,
-          top: 50,
-          fontFamily: "Arial",
-          fill: "#ffffff",
-          fontSize: 30,
-        });
+    //     const text = new fabric.IText("Edit this text", {
+    //       left: 50,
+    //       top: 50,
+    //       fontFamily: "Arial",
+    //       fill: "#ffffff",
+    //       fontSize: 30,
+    //     });
 
-        fabricCanvasRef.current.add(text);
-        fabricCanvasRef.current.setActiveObject(text);
-      }
+    //     fabricCanvasRef.current.add(text);
+    //     fabricCanvasRef.current.setActiveObject(text);
+    //   }
 
-      return () => {
-        if (fabricCanvasRef.current) {
-          fabricCanvasRef.current.dispose();
-          fabricCanvasRef.current = null;
-        }
-      };
-    }, [isAddingCaption]);
+    //   return () => {
+    //     if (fabricCanvasRef.current) {
+    //       fabricCanvasRef.current.dispose();
+    //       fabricCanvasRef.current = null;
+    //     }
+    //   };
+    // }, [isAddingCaption]);
 
     return (
       <Box
@@ -133,9 +210,7 @@ const VideoPlayer = forwardRef(
             >
               Your browser does not support the video tag.
             </video>
-            {!isAddingCaption && (
-              <Caption caption={currentCaption} style={captionStyle} />
-            )}
+            {<Caption caption={currentCaption} style={captionStyle} />}
             {isAddingCaption && (
               <canvas
                 ref={canvasRef}

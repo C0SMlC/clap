@@ -66,6 +66,7 @@ const VideoEditor = () => {
   const handleEmbedCaptions = async () => {
     setIsProcessing(true);
     try {
+      const customTextData = videoRef.current.getCustomTextData();
       const response = await fetch("/api/embed-captions", {
         method: "POST",
         headers: {
@@ -75,6 +76,7 @@ const VideoEditor = () => {
           videoSrc,
           captions: caption,
           captionStyle,
+          customText: customTextData,
         }),
       });
 
@@ -87,18 +89,19 @@ const VideoEditor = () => {
       setDownloadLink(data.embeddedVideoPath);
       toast({
         title: "Video processed successfully",
-        description: "Your video with embedded captions is ready for download.",
+        description:
+          "Your video with embedded captions and custom text is ready for download.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
     } catch (error) {
-      console.error("Error embedding captions:", error);
+      console.error("Error embedding captions and custom text:", error);
       toast({
         title: "Error processing video",
         description:
           error.message ||
-          "There was an error embedding the captions. Please try again.",
+          "There was an error embedding the captions and custom text. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,

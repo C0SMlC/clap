@@ -8,7 +8,7 @@ import ffmpegStatic from "ffmpeg-static";
 const execFileAsync = promisify(execFile);
 
 export async function POST(request) {
-  const { videoSrc, captions, captionStyle } = await request.json();
+  const { videoSrc, captions, captionStyle, customText } = await request.json();
 
   if (!videoSrc || !captions) {
     return NextResponse.json(
@@ -43,19 +43,31 @@ export async function POST(request) {
 
     // Log the contents of the SRT file for debugging
     const srtFileContents = await fs.readFile(captionsPath, "utf-8");
+    console.log("SRT file contents:", srtFileContents);
 
-    console.log("captionStyle.size", captionStyle.size);
-    console.log("captionStyle.color", captionStyle.color);
+    // Prepare FFmpeg filter for captions and custom text
+    let filter = `subtitles=${captionsPath}:force_style='Fontname=${
+      captionStyle.font
+    },Fontsize=${captionStyle.size},PrimaryColour=${convertColorToFFmpeg(
+      captionStyle.color
+    )},Spacing=0.2,Outline=0,Shadow=0.75'`;
+
+    // Add custom text to filter if present
+    if (customText) {
+      // Escape single quotes in the custom text
+      const escapedText = customText.text.replace(/'/g, "'\\''");
+      filter += `,drawtext=text='${escapedText}':fontfile=/path/to/font.ttf:fontsize=${
+        customText.fontSize
+      }:fontcolor=${convertColorToFFmpeg(customText.fill)}:x=${
+        customText.left
+      }:y=${customText.top}`;
+    }
 
     const args = [
       "-i",
       inputVideoPath,
       "-vf",
-      `subtitles=public/caption_1728285071762.srt:force_style='Fontname=${
-        captionStyle.font
-      },Fontsize=${captionStyle.size},PrimaryColour=${convertColorToFFmpeg(
-        captionStyle.color
-      )},Spacing=0.2,Outline=0,Shadow=0.75'`,
+      filter,
       "-c:v",
       "libx264",
       "-c:a",
