@@ -1,0 +1,108 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 384
+PlayResY: 288
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,24,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,00:00:00.36,00:00:00.72,Default,,0,0,0,,Ladies and
+Dialogue: 0,00:00:00.72,00:00:01.02,Default,,0,0,0,,gentlemen,
+Dialogue: 0,00:00:01.02,00:00:01.72,Default,,0,0,0,,I always
+Dialogue: 0,00:00:01.72,00:00:02.31,Default,,0,0,0,,see comments
+Dialogue: 0,00:00:02.31,00:00:02.52,Default,,0,0,0,,under
+Dialogue: 0,00:00:02.52,00:00:03.58,Default,,0,0,0,,my videos
+Dialogue: 0,00:00:03.58,00:00:03.64,Default,,0,0,0,,like,
+Dialogue: 0,00:00:03.64,00:00:03.79,Default,,0,0,0,,"How
+Dialogue: 0,00:00:03.79,00:00:04.09,Default,,0,0,0,,do you
+Dialogue: 0,00:00:04.09,00:00:04.25,Default,,0,0,0,,invest
+Dialogue: 0,00:00:04.25,00:00:05.24,Default,,0,0,0,,your money?"
+Dialogue: 0,00:00:05.24,00:00:06.04,Default,,0,0,0,,But
+Dialogue: 0,00:00:06.04,00:00:06.37,Default,,0,0,0,,that's
+Dialogue: 0,00:00:06.37,00:00:06.70,Default,,0,0,0,,not really
+Dialogue: 0,00:00:06.70,00:00:07.32,Default,,0,0,0,,a good
+Dialogue: 0,00:00:07.32,00:00:07.78,Default,,0,0,0,,question,
+Dialogue: 0,00:00:07.78,00:00:08.27,Default,,0,0,0,,and here's
+Dialogue: 0,00:00:08.27,00:00:08.69,Default,,0,0,0,,why at
+Dialogue: 0,00:00:08.69,00:00:08.90,Default,,0,0,0,,this
+Dialogue: 0,00:00:08.90,00:00:09.03,Default,,0,0,0,,point
+Dialogue: 0,00:00:09.03,00:00:10.09,Default,,0,0,0,,I'm investing
+Dialogue: 0,00:00:10.09,00:00:10.43,Default,,0,0,0,,millions
+Dialogue: 0,00:00:10.43,00:00:11.06,Default,,0,0,0,,and millions
+Dialogue: 0,00:00:11.06,00:00:11.82,Default,,0,0,0,,of dollars.
+Dialogue: 0,00:00:11.82,00:00:12.48,Default,,0,0,0,,But 90%
+Dialogue: 0,00:00:12.48,00:00:13.01,Default,,0,0,0,,of you
+Dialogue: 0,00:00:13.01,00:00:13.32,Default,,0,0,0,,aren't
+Dialogue: 0,00:00:13.32,00:00:13.66,Default,,0,0,0,,there
+Dialogue: 0,00:00:13.66,00:00:14.03,Default,,0,0,0,,yet,
+Dialogue: 0,00:00:14.03,00:00:14.46,Default,,0,0,0,,so what
+Dialogue: 0,00:00:14.46,00:00:14.92,Default,,0,0,0,,I do
+Dialogue: 0,00:00:14.92,00:00:15.48,Default,,0,0,0,,is not
+Dialogue: 0,00:00:15.48,00:00:15.69,Default,,0,0,0,,going
+Dialogue: 0,00:00:15.69,00:00:16.17,Default,,0,0,0,,to apply
+Dialogue: 0,00:00:16.17,00:00:17.21,Default,,0,0,0,,to you.
+Dialogue: 0,00:00:17.21,00:00:17.87,Default,,0,0,0,,But since
+Dialogue: 0,00:00:17.87,00:00:18.01,Default,,0,0,0,,you
+Dialogue: 0,00:00:18.01,00:00:18.21,Default,,0,0,0,,guys
+Dialogue: 0,00:00:18.21,00:00:18.82,Default,,0,0,0,,are curious
+Dialogue: 0,00:00:18.82,00:00:19.17,Default,,0,0,0,,and I
+Dialogue: 0,00:00:19.17,00:00:19.37,Default,,0,0,0,,find
+Dialogue: 0,00:00:19.37,00:00:19.50,Default,,0,0,0,,this
+Dialogue: 0,00:00:19.50,00:00:19.71,Default,,0,0,0,,to be
+Dialogue: 0,00:00:19.71,00:00:20.35,Default,,0,0,0,,a rather
+Dialogue: 0,00:00:20.35,00:00:20.69,Default,,0,0,0,,interesting
+Dialogue: 0,00:00:20.69,00:00:20.96,Default,,0,0,0,,topic,
+Dialogue: 0,00:00:20.96,00:00:21.57,Default,,0,0,0,,I decided
+Dialogue: 0,00:00:21.57,00:00:21.83,Default,,0,0,0,,that
+Dialogue: 0,00:00:21.83,00:00:21.94,Default,,0,0,0,,today
+Dialogue: 0,00:00:21.94,00:00:22.23,Default,,0,0,0,,I'm going
+Dialogue: 0,00:00:22.23,00:00:22.76,Default,,0,0,0,,to share
+Dialogue: 0,00:00:22.76,00:00:23.16,Default,,0,0,0,,how I
+Dialogue: 0,00:00:23.16,00:00:23.35,Default,,0,0,0,,would
+Dialogue: 0,00:00:23.35,00:00:23.85,Default,,0,0,0,,invest
+Dialogue: 0,00:00:23.85,00:00:24.46,Default,,0,0,0,,a thousand
+Dialogue: 0,00:00:24.46,00:00:24.82,Default,,0,0,0,,dollars
+Dialogue: 0,00:00:24.82,00:00:25.14,Default,,0,0,0,,if I
+Dialogue: 0,00:00:25.14,00:00:25.33,Default,,0,0,0,,wasn't
+Dialogue: 0,00:00:25.33,00:00:26.33,Default,,0,0,0,,a multi-millionaire.
+Dialogue: 0,00:00:26.33,00:00:26.92,Default,,0,0,0,,And I {\c&H0000FF&}want{\c&HFFFFFF&}
+Dialogue: 0,00:00:26.92,00:00:27.12,Default,,0,0,0,,to promise
+Dialogue: 0,00:00:27.12,00:00:27.94,Default,,0,0,0,,you one
+Dialogue: 0,00:00:27.94,00:00:28.12,Default,,0,0,0,,thing,
+Dialogue: 0,00:00:28.12,00:00:28.42,Default,,0,0,0,,now by
+Dialogue: 0,00:00:28.42,00:00:28.66,Default,,0,0,0,,the end
+Dialogue: 0,00:00:28.66,00:00:29.10,Default,,0,0,0,,of this
+Dialogue: 0,00:00:29.10,00:00:29.21,Default,,0,0,0,,video
+Dialogue: 0,00:00:29.21,00:00:29.62,Default,,0,0,0,,you will
+Dialogue: 0,00:00:29.62,00:00:29.73,Default,,0,0,0,,know
+Dialogue: 0,00:00:29.73,00:00:30.05,Default,,0,0,0,,how to
+Dialogue: 0,00:00:30.05,00:00:30.28,Default,,0,0,0,,turn
+Dialogue: 0,00:00:30.28,00:00:31.16,Default,,0,0,0,,a thousand
+Dialogue: 0,00:00:31.16,00:00:31.50,Default,,0,0,0,,into
+Dialogue: 0,00:00:31.50,00:00:31.92,Default,,0,0,0,,ten
+Dialogue: 0,00:00:31.92,00:00:32.42,Default,,0,0,0,,thousand
+Dialogue: 0,00:00:32.42,00:00:32.60,Default,,0,0,0,,or
+Dialogue: 0,00:00:32.60,00:00:32.82,Default,,0,0,0,,even
+Dialogue: 0,00:00:32.82,00:00:33.34,Default,,0,0,0,,a hundred
+Dialogue: 0,00:00:33.34,00:00:33.71,Default,,0,0,0,,thousand
+Dialogue: 0,00:00:33.71,00:00:34.53,Default,,0,0,0,,dollars
+Dialogue: 0,00:00:34.53,00:00:35.32,Default,,0,0,0,,in
+Dialogue: 0,00:00:35.32,00:00:36.02,Default,,0,0,0,,365
+Dialogue: 0,00:00:36.02,00:00:36.24,Default,,0,0,0,,days
+Dialogue: 0,00:00:36.24,00:00:36.79,Default,,0,0,0,,or less.
+Dialogue: 0,00:00:36.79,00:00:37.82,Default,,0,0,0,,And yes,
+Dialogue: 0,00:00:37.82,00:00:38.10,Default,,0,0,0,,I'm
+Dialogue: 0,00:00:38.10,00:00:38.29,Default,,0,0,0,,aware
+Dialogue: 0,00:00:38.29,00:00:38.88,Default,,0,0,0,,that that's
+Dialogue: 0,00:00:38.88,00:00:39.20,Default,,0,0,0,,a massive
+Dialogue: 0,00:00:39.20,00:00:39.67,Default,,0,0,0,,claim,
+Dialogue: 0,00:00:39.67,00:00:39.93,Default,,0,0,0,,but I
+Dialogue: 0,00:00:39.93,00:00:40.14,Default,,0,0,0,,don't
+Dialogue: 0,00:00:40.14,00:00:40.38,Default,,0,0,0,,expect
+Dialogue: 0,00:00:40.38,00:00:40.93,Default,,0,0,0,,you to {\c&H0000FF&}take{\c&HFFFFFF&}
+Dialogue: 0,00:00:40.93,00:00:41.25,Default,,0,0,0,,my word
+Dialogue: 0,00:00:41.25,00:00:43.25,Default,,0,0,0,,for it.

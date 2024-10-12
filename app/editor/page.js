@@ -5,6 +5,7 @@ import { Box, Flex, VStack, Button, useToast, HStack } from "@chakra-ui/react";
 import VideoPlayer from "../components/VideoPlayer";
 import Sidebar from "../components/Sidebar";
 import EditVideo from "../components/EditVideo";
+import VideoTimeline from "../components/VideoTimeline";
 
 const VideoEditor = () => {
   const [activeTab, setActiveTab] = useState("edit");
@@ -267,16 +268,16 @@ const VideoEditor = () => {
             height={`${timelineHeight}px`}
             position="relative"
           >
-            <canvas
-              ref={canvasRef}
-              width={800}
-              height={timelineHeight}
-              style={{
-                cursor: "pointer",
-                width: "100%",
-                height: "100%",
+            <VideoTimeline
+              duration={duration}
+              currentTime={currentTime}
+              onSeek={(time) => {
+                if (videoRef.current) {
+                  videoRef.current.currentTime = time;
+                }
               }}
-              onClick={handleTimelineClick}
+              videoSrc={videoSrc}
+              onExport={handleEmbedCaptions}
             />
           </Box>
         </Box>
