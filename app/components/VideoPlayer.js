@@ -185,7 +185,7 @@ const VideoPlayer = forwardRef(
         alignItems="center"
         padding={4}
       >
-        <Box width={["100%", "80%", "60%", "40%"]} maxWidth="800px">
+        <Box width={["100%", "80%", "60%", "40%"]} maxWidth="300px">
           <Box
             width="100%"
             height="0"

@@ -12,7 +12,7 @@ function Sidebar({ setActiveTab, activeTab }) {
   ];
 
   return (
-    <Box bg="gray.800" w="64" h="100vh" p={4}>
+    <Box bg="gray.800" w="64" p={4}>
       <VStack spacing={4} align="stretch">
         {menuItems.map((item) => (
           <Button

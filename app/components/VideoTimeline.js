@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Box, Flex, VStack, Text, IconButton } from "@chakra-ui/react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
 import {
   AiOutlineScissor,
   AiOutlineVideoCamera,
   AiOutlineDelete,
-  AiOutlineDownload,
 } from "react-icons/ai";
 
 const VideoTimeline = ({
@@ -14,130 +13,94 @@ const VideoTimeline = ({
   videoSrc,
   onExport,
 }) => {
-  const canvasRef = useRef(null);
   const [thumbnails, setThumbnails] = useState([]);
   const [videoError, setVideoError] = useState(false);
-  const timelineHeight = 120;
+  const [loading, setLoading] = useState(false);
+  const videoRef = useRef(null);
+  const generatedRef = useRef(false);
+
   const thumbnailWidth = 160;
   const thumbnailHeight = 90;
-  const sidebarWidth = 60;
+  const timelineHeight = 160;
+  const sidebarWidth = 80;
 
-  useEffect(() => {
-    const generateThumbnails = async () => {
-      setVideoError(false); // Reset the error state
+  const generateThumbnails = useCallback(async () => {
+    if (generatedRef.current) return;
+    console.log("Starting thumbnail generation");
+    setVideoError(false);
+    setLoading(true);
 
-      const video = document.createElement("video");
-      video.src = videoSrc;
-      video.preload = "metadata";
+    const video = document.createElement("video");
 
-      // Error handling for video load
-      video.onerror = (err) => {
-        console.error("Error loading video:", err);
-        setVideoError(true);
-      };
+    // Ensure the video source URL is correct
+    const fullVideoSrc = videoSrc.startsWith("http")
+      ? videoSrc
+      : `${window.location.origin}/${videoSrc}`;
+    console.log("Full video source URL:", fullVideoSrc);
 
-      try {
-        // Wait for the video to load metadata
-        await new Promise((resolve, reject) => {
-          video.onloadedmetadata = resolve;
-          video.onerror = reject; // Handle video load errors
-        });
+    video.src = fullVideoSrc;
+    video.crossOrigin = "anonymous"; // Add this line to handle CORS issues
+    video.preload = "auto";
 
-        const thumbnailCount = Math.ceil(duration / 2); // Thumbnails every 2 seconds
-        const newThumbnails = [];
-
-        for (let i = 0; i < thumbnailCount; i++) {
-          const time = i * 3;
-          video.currentTime = time;
-
-          await new Promise((resolve, reject) => {
-            video.onseeked = resolve;
-            video.onerror = reject; // Handle seek errors
-          });
-
-          const canvas = document.createElement("canvas");
-          canvas.width = thumbnailWidth;
-          canvas.height = thumbnailHeight;
-
-          const ctx = canvas.getContext("2d");
-          try {
-            ctx.drawImage(video, 0, 0, thumbnailWidth, thumbnailHeight);
-            newThumbnails.push({
-              time,
-              url: canvas.toDataURL(),
-            });
-          } catch (drawError) {
-            console.error("Error generating thumbnail", drawError);
-          }
-        }
-
-        setThumbnails(newThumbnails);
-      } catch (err) {
-        console.error("Thumbnail generation failed", err);
-        setVideoError(true); // Handle the error state
-      }
+    video.onerror = (err) => {
+      console.error("Error loading video:", err);
+      setVideoError(true);
     };
 
-    // Only generate thumbnails if there's no video error
-    if (videoSrc) {
-      generateThumbnails();
+    try {
+      console.log("Waiting for video to load");
+      await new Promise((resolve, reject) => {
+        video.onloadeddata = resolve;
+        video.onerror = reject;
+      });
+      console.log("Video loaded successfully");
+
+      const thumbnailCount = Math.ceil(duration / 2);
+      console.log(`Generating ${thumbnailCount} thumbnails`);
+      const newThumbnails = [];
+
+      for (let i = 0; i < thumbnailCount; i++) {
+        const time = i * 2;
+        console.log(`Generating thumbnail for time: ${time}`);
+
+        await new Promise((resolve) => {
+          video.currentTime = time;
+          video.onseeked = () => resolve();
+        });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = thumbnailWidth;
+        canvas.height = thumbnailHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, thumbnailWidth, thumbnailHeight);
+        const thumbnailUrl = canvas.toDataURL();
+
+        console.log(`Thumbnail generated for time ${time}`);
+        newThumbnails.push({
+          time,
+          url: thumbnailUrl,
+        });
+      }
+
+      console.log(`Total thumbnails generated: ${newThumbnails.length}`);
+      setThumbnails(newThumbnails);
+      generatedRef.current = true;
+    } catch (err) {
+      console.error("Thumbnail generation failed", err);
+      setVideoError(true);
+    } finally {
+      setLoading(false);
+      console.log("Thumbnail generation process completed");
     }
   }, [videoSrc, duration]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || videoError) return;
-
-    const ctx = canvas.getContext("2d");
-    const width = canvas.width - sidebarWidth;
-    const height = canvas.height;
-
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, height);
-
-    // Draw background
-    ctx.fillStyle = "#1A202C";
-    ctx.fillRect(sidebarWidth, 0, width, height);
-
-    // Draw thumbnails
-    thumbnails.forEach((thumbnail) => {
-      const img = new Image();
-      img.src = thumbnail.url;
-      const x = sidebarWidth + (thumbnail.time / duration) * width;
-      img.onload = () => {
-        ctx.drawImage(img, x, 0, thumbnailWidth, thumbnailHeight);
-      };
-    });
-
-    // Draw time markers
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "10px Arial";
-    for (let i = 0; i <= duration; i += 3) {
-      const x = sidebarWidth + (i / duration) * width;
-      ctx.fillText(formatTime(i), x, height - 5);
+    if (videoSrc && duration > 0 && !generatedRef.current) {
+      console.log(`Initiating thumbnail generation for video: ${videoSrc}`);
+      generateThumbnails();
     }
-
-    // Draw playhead
-    const playheadX = sidebarWidth + (currentTime / duration) * width;
-    ctx.beginPath();
-    ctx.moveTo(playheadX, 0);
-    ctx.lineTo(playheadX, height);
-    ctx.strokeStyle = "#3182CE";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Draw sidebar
-    ctx.fillStyle = "#2D3748";
-    ctx.fillRect(0, 0, sidebarWidth, height);
-  }, [currentTime, duration, thumbnails, videoError]);
-
-  const handleTimelineClick = (e) => {
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left - sidebarWidth;
-    const clickedTime = (x / (canvas.width - sidebarWidth)) * duration;
-    onSeek(clickedTime);
-  };
+  }, [videoSrc, duration, generateThumbnails]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -147,71 +110,104 @@ const VideoTimeline = ({
       .padStart(2, "0")}`;
   };
 
+  const handleTimelineClick = (time) => {
+    onSeek(time);
+  };
+
   return (
-    <Box width="100%" height={`${timelineHeight}px`} position="relative">
-      {videoError ? (
-        <Box color="red">Error loading video for thumbnails</Box>
+    <Box
+      width="100vw"
+      height={`${timelineHeight}px`}
+      position="relative"
+      p={"20px"}
+      bg="gray.900"
+    >
+      {loading ? (
+        <Box color="white" p={4}>
+          Generating thumbnails...
+        </Box>
+      ) : videoError ? (
+        <Box color="red.500" p={4}>
+          Error loading video for thumbnails
+        </Box>
       ) : (
         <Flex>
-          <VStack
+          <Flex
             width={`${sidebarWidth}px`}
             height={`${timelineHeight}px`}
-            bg="gray.700"
+            bg="gray.800"
+            flexDirection="column"
             justifyContent="space-around"
             alignItems="center"
-            padding="8px 0"
+            padding="12px 0"
           >
-            <IconButton
-              aria-label="Video"
-              icon={<AiOutlineVideoCamera />}
-              size="sm"
-              variant="ghost"
-              color="white"
-            />
-            <IconButton
-              aria-label="Cut"
-              icon={<AiOutlineScissor />}
-              size="sm"
-              variant="ghost"
-              color="white"
-            />
-            <IconButton
-              aria-label="Delete"
-              icon={<AiOutlineDelete />}
-              size="sm"
-              variant="ghost"
-              color="white"
-            />
-            <IconButton
-              aria-label="Export"
-              icon={<AiOutlineDownload />}
-              size="sm"
-              variant="ghost"
-              color="white"
-              onClick={onExport}
-            />
-          </VStack>
-          <Box position="relative" width={`calc(100% - ${sidebarWidth}px)`}>
-            <canvas
-              ref={canvasRef}
-              width={1000}
-              height={timelineHeight}
-              style={{
-                cursor: "pointer",
-                width: "100%",
-                height: "100%",
-              }}
-              onClick={handleTimelineClick}
-            />
-            <Box
-              position="absolute"
-              top={0}
-              right={0}
-              bg="gray.800"
-              color="white"
-              padding="8px"
-              borderRadius="md"
-            ></Box>
+            {[
+              { icon: AiOutlineVideoCamera, label: "Video" },
+              { icon: AiOutlineScissor, label: "Cut" },
+              { icon: AiOutlineDelete, label: "Delete" },
+            ].map((item, index) => (
+              <IconButton
+                key={index}
+                aria-label={item.label}
+                icon={<item.icon size="24px" />}
+                size="lg"
+                variant="ghost"
+                color="white"
+                onClick={item.onClick}
+                _hover={{ bg: "gray.700" }}
+              />
+            ))}
+          </Flex>
+          <Box
+            width={`calc(100% - ${sidebarWidth}px)`}
+            overflowX="auto"
+            overflowY="hidden"
+            css={{
+              "&::-webkit-scrollbar": {
+                height: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: "4px",
+              },
+            }}
+          >
+            <Flex>
+              {thumbnails.length > 0 ? (
+                thumbnails.map((thumbnail, index) => (
+                  <Box
+                    key={index}
+                    position="relative"
+                    minWidth={`${thumbnailWidth}px`}
+                    height={`${timelineHeight}px`}
+                    onClick={() => handleTimelineClick(thumbnail.time)}
+                    cursor="pointer"
+                    _hover={{ opacity: 0.8 }}
+                  >
+                    <Box
+                      backgroundImage={`url(${thumbnail.url})`}
+                      backgroundSize="cover"
+                      width={`${thumbnailWidth}px`}
+                      height={`${thumbnailHeight}px`}
+                      border={
+                        currentTime >= thumbnail.time &&
+                        currentTime < thumbnail.time + 2
+                          ? "2px solid"
+                          : "none"
+                      }
+                      borderColor="blue.500"
+                    />
+                    <Text fontSize="xs" color="white" textAlign="center" mt={1}>
+                      {formatTime(thumbnail.time)}
+                    </Text>
+                  </Box>
+                ))
+              ) : (
+                <Box color="white" p={4}>
+                  No thumbnails generated. Check console for logs.
+                </Box>
+              )}
+            </Flex>
           </Box>
         </Flex>
       )}

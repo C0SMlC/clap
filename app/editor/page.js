@@ -246,27 +246,47 @@ const VideoEditor = () => {
   };
 
   return (
-    <Flex bg="gray.900" minH="100vh" color="white">
-      <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} />
-      <Flex flex={1}>
-        <Box minWidth="300px" p={4} bg="gray.800">
-          {renderActiveTab()}
-        </Box>
-        <Box flex={1} p={4}>
-          <VideoPlayer
-            videoSrc={videoSrc}
-            caption={caption}
-            captionStyle={captionStyle}
-            ref={videoRef}
-            onTimeUpdate={handleTimeUpdate}
-            onDurationChange={handleDurationChange}
-            isAddingCaption={isAddingCaption}
-          />
+    <Flex bg="gray.900" minH="100vh" color="white" flexDirection="column">
+      <Flex flex={1} overflow="hidden">
+        <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} />
+        <Flex flex={1} flexDirection="column">
+          <Flex flex={1} overflow="hidden">
+            <Box
+              height="800px"
+              width="400px"
+              p={4}
+              bg="gray.800"
+              overflowY="auto"
+            >
+              {renderActiveTab()}
+            </Box>
+            <Box
+              flex={1}
+              p={4}
+              overflowY="auto"
+              height={"800px"}
+              alignContent={"center"}
+              justifyContent={"center"}
+            >
+              <VideoPlayer
+                videoSrc={videoSrc}
+                caption={caption}
+                captionStyle={captionStyle}
+                ref={videoRef}
+                onTimeUpdate={handleTimeUpdate}
+                onDurationChange={handleDurationChange}
+                isAddingCaption={isAddingCaption}
+              />
+            </Box>
+          </Flex>
           <Box
-            mt={4}
-            width="100%"
-            height={`${timelineHeight}px`}
-            position="relative"
+            bg="gray.800"
+            borderTop="1px solid"
+            borderColor="gray.700"
+            maxW={"100%"}
+            overflowX={"auto"}
+            maxHeight="400px"
+            m={"24px"}
           >
             <VideoTimeline
               duration={duration}
@@ -280,7 +300,7 @@ const VideoEditor = () => {
               onExport={handleEmbedCaptions}
             />
           </Box>
-        </Box>
+        </Flex>
       </Flex>
     </Flex>
   );
